@@ -9,7 +9,7 @@ OSS版ではすでに多くの情報が日本語でも調べることが可能�
 ## Pre-requisite
 
 * 環境
-	* macOS or Linux
+	* macOS or Linux or Windows
 
 * ソフトウェア
 	* Terraform
