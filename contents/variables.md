@@ -38,7 +38,7 @@ PS > cd path/to/tf-workspace/tf-handson-workshop
 
 以下の二つのファイルを作成してください。
 
-main.tf
+`main.tf`
 ・macOS
 ```shell
 $ cat <<EOF > main.tf
@@ -80,7 +80,7 @@ resource "aws_instance" "hello-tf-instance" {
 }
 ```
 
-variables.tf
+`variables.tf`
 ・macOS
 ```shell 
 $ cat << EOF > variables.tf
