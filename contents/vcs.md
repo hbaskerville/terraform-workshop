@@ -129,7 +129,7 @@ $ git push -u origin master
 ```
 ・Windows
 ```shell
-PS > export GITURL=<YOUR_REPO_URL>
+PS > $env:GITURL = <YOUR_REPO_URL>
 PS > git init
 PS > git add main.tf
 PS > git commit -m "first commit"
