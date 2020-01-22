@@ -88,13 +88,20 @@ VCS Providerが一つ追加され、Callback URLが生成されたのでこれ�
 
 まずワークスペースのレポジトリを作ります。
 
+・macOS
 ```shell
 $ mkdir -p tf-workspace/tf-handson-workshop
 $ cd tf-workspace/tf-handson-workshop
 ```
+・Windows
+```
+PS > mkdir tf-workspace/tf-handson-workshop
+PS > cd tf-workspace/tf-handson-workshop
+```
 
 以下のファイルを作ります。
 
+・macOS
 ```shell
 $ cat <<EOF > main.tf
 terraform {
@@ -102,9 +109,16 @@ terraform {
 }
 EOF
 ```
+・Windows
+```
+terraform {
+	required_version = "~> 0.12"
+}
+```
 
 GitHubにプッシュして連携の確認をしてみましょう。
 
+・macOS
 ```shell
 $ export GITURL=<YOUR_REPO_URL>
 $ git init
@@ -112,6 +126,15 @@ $ git add main.tf
 $ git commit -m "first commit"
 $ git remote add origin $GITURL
 $ git push -u origin master
+```
+・Windows
+```shell
+PS > export GITURL=<YOUR_REPO_URL>
+PS > git init
+PS > git add main.tf
+PS > git commit -m "first commit"
+PS > git remote add origin $GITURL
+PS > git push -u origin master
 ```
 
 TFC上でWorkspaceを作成します。トップ画面の`+ New Workspace`を選択し、GitHubを選択します。
