@@ -17,13 +17,22 @@ Terraformは便利なツールですが、多くのユーザが利用し大規�
 GitHub上に`sentinel-handson-workshop`という名前のパブリックレポジトリを作成してください。
 ```
 
+・macOS
 ```shell
 $ mkdir -p tf-workspace/sentinel-handson-workshop
 $ cd tf-workspace/sentinel-handson-workshop
 ```
+・Windows
+```
+PS > mkdir tf-workspace/sentinel-handson-workshop
+PS > cd tf-workspace/sentinel-handson-workshop
+```
 
 以下の二つのファイルを追加します。
 
+`sentinel.hcl`
+
+・macOS
 ```shell
 $ cat <<EOF > sentinel.hcl
 policy "first-policy" {
@@ -31,7 +40,16 @@ policy "first-policy" {
 }
 EOF
 ```
+・Windows
+```shell
+policy "first-policy" {
+    enforcement_level = "hard-mandatory"
+}
+```
 
+`first-policy.sentinel`
+
+・macOS
 ```shell
 $ cat <<EOF > first-policy.sentinel
 import "tfplan"
@@ -44,6 +62,18 @@ main = rule {
   }
 }
 EOF
+```
+・Windows
+```
+import "tfplan"
+
+main = rule {
+  all tfplan.resources.aws_instance as _, instances {
+    all instances as _, r {
+      (length(r.applied.tags) else 0) > 0
+    }
+  }
+}
 ```
 
 <details><summary>GCPの場合はこちら</summary>
@@ -62,6 +92,7 @@ main = rule {
 </details>
 
 
+・macOS
 ```shell
 $ echo "# sentinel-handson-workshop" >> README.md
 $ git init
@@ -69,6 +100,15 @@ $ git add .
 $ git commit -m "first commit"
 $ git remote add origin https://github.com/tkaburagi/sentinel-handson-workshop.git
 $ git push -u origin master
+```
+・Windows
+```shell
+PS > echo "# sentinel-handson-workshop" >> README.md
+PS > git init
+PS > git add .
+PS > git commit -m "first commit"
+PS > git remote add origin https://github.com/`リポジトリ`
+PS > git push -u origin master
 ```
 
 Sentinelは最低限二つのファイルが必要です。一つは`sentinel.hcl`、もう一つは`<POLICYNAME>.sentinel`です。
@@ -193,10 +233,17 @@ resource "google_compute_instance" "vm_instance" {
 ```
 </details>
 
+・macOS
 ```shell
 $ git add main.tf
 $ git commit -m "added tags"
 $ git push
+```
+・Windows
+```shell
+PS > git add main.tf
+PS > git commit -m "added tags"
+PS > git push
 ```
 
 再度ワークスペースのRunsの中から最新の実行を選んでください。次はポリシーチェックをクリアし、Applyできるはずです。`confirm & apply`をクリックしてApplyしてみましょう。
@@ -242,11 +289,19 @@ Applyにはコンフィグレーションファイルというファイルが必
 
 サンプルを一つ作ってみます。
 
+・macOS
 ```shell
 $ mkdir simulator-sample
 $ cd simulator-sample
 ```
+・Windows
+```shell
+PS > mkdir simulator-sample
+PS > cd simulator-sample
+```
 
+`sentinel.json`
+・macOS
 ```shell
 $ cat <<EOF > sentinel.json
 {
@@ -259,11 +314,24 @@ $ cat <<EOF > sentinel.json
 }
 EOF
 ```
+・Windows
+```shell
+{
+    "mock": {
+        "time": {
+            "hour": 9,
+            "minute": 42
+        }
+    }
+}
+```
 
 これがコンフィグレーションファイルとなります。このjsonは[time](https://docs.hashicorp.com/sentinel/imports/time)というSentinelの標準で使える機能をモックし、仮のデータ`9時42分`として入れています。
 
 次にSentinelのコードを作ります。
 
+`foo.sentinel`
+・macOS
 ```shell
 $ cat <<EOF > foo.sentinel
 import "time"
@@ -271,9 +339,17 @@ import "time"
 main = time.hour == 10
 EOF
 ```
+・Windows
+```
+import "time"
+
+main = time.hour == 10
+```
+
 
 ここでは10時かどうかを確認しているためApplyするとエラーになるはずです。Applyして試してみましょう。
 
+・macOS
 ```console
 $ sentinel apply foo.sentinel
 Fail
@@ -282,11 +358,22 @@ Execution trace. The information below will show the values of all
 the rules evaluated and their intermediate boolean expressions. Note that
 some boolean expressions may be missing if short-circuit logic was taken.
 ```
+・Windows
+```shell
+PS > sentinel apply foo.sentinel
+Fail
+```
 
 コードを直して再度試してみます。`main = time.hour == 10` を`main = time.hour == 9`に変更して再度Applyを実行します。
 
+・macOS
 ```console
 $ sentinel apply foo.sentinel
+Pass
+```
+・Windows
+```shell
+PS > sentinel apply foo.sentinel
 Pass
 ```
 
@@ -294,6 +381,9 @@ Pass
 
 まずは関数を一つ作ってみます。ここでのSentinelはポリシーの定義ではなくあくまでも関数でのモックデータの定義なので`main`は必要ありません。
 
+`mock-foo.sentinel`
+
+・macOS
 ```shell
 $ cat <<EOF > mock-foo.sentinel
 bar = func() {                                                                                                                                                           
@@ -301,9 +391,18 @@ bar = func() {
 }                                                                                                                                                                               
 EOF   
 ```
+・Windows
+```shell
+bar = func() {                                                                                                                                                           
+    return "baz"                                                                                                                                                                
+}   
+```
 
 次に新しいコンフィグを作ってモックデータに先ほどSentinelで作った関数を指定します。
 
+`sentinel-2.json`
+
+・macOS
 ```shell
 $ cat <<EOF > sentinel-2.json
 {                                                                                                                                                                        
@@ -313,15 +412,30 @@ $ cat <<EOF > sentinel-2.json
 }                                                                                                                            
 EOF       
 ```
+・Windows
+```
+{                                                                                                                                                                        
+    "mock": {                                                                                                                                                                   
+        "foo": "mock-foo.sentinel"                                                                                                                                              
+    }                                                                                                                                                                           
+}
+```
 
 最後に新しいポリシーの定義ファイルを作ります。
 
+`foo-2.sentinel`
+
+・macOS
 ```shell
 $ cat <<EOF > foo-2.sentinel
-import "foo"                                                                                                                                                                    
-                                                                                                                                                                                
+import "foo"
 main = foo.bar() == "baz"
 EOF
+```
+・Windows
+```
+import "foo"
+main = foo.bar() == "baz"
 ```
 
 モックデータで定義されている`foo`をimportして、関数`bar`を実行し、実行結果が`baz`であるかどうかを判定しています。
@@ -343,12 +457,24 @@ ApplyするとPassとなるはずです。
 
 WorkspacesのRunsから最新の実行結果の`Plan finished`をクリックすると`Downloads Sentinel mocks`というボタンがあるのでこれをクリックしてモックデータをダウンロードし新しいフォルダを作ります。
 
+・macOS
 ```shell
 $ tar xvfz path/to/run-gvXm387VP1VShKC1-sentinel-mocks.tar.gz
 $ mkdir -p simulator-tf-sample/test/foo simulator-tf-sample/testdata
 $ touch simulator-tf-sample/sentinel.json simulator-tf-sample/foo.sentinel simulator-tf-sample/test/foo/fail.json simulator-tf-sample/test/foo/pass.json
 $ mv path/to/run-gvXm387VP1VShKC1-sentinel-mocks/* simulator-tf-sample/testdata/
 $ cd simulator-tf-sample
+```
+・Windows
+`run-gvXm387VP1VShKC1-sentinel-mocks.tar.gz`を解凍します。
+```shell
+PS > mkdir simulator-tf-sample/test/foo simulator-tf-sample/testdata
+PS > New-Item -Type File simulator-tf-sample/sentinel.json
+PS > New-Item -Type File simulator-tf-sample/foo.sentinel
+PS > New-Item -Type File simulator-tf-sample/test/foo/fail.json
+PS > New-Item -Type File simulator-tf-sample/test/foo/pass.json
+PS > mv path/to/run-gvXm387VP1VShKC1-sentinel-mocks/* simulator-tf-sample/testdata/
+PS > cd simulator-tf-sample
 ```
 
 以下のような構造になればOKです。
@@ -371,7 +497,7 @@ $ cd simulator-tf-sample
 
 `testdata/`以下にコピーした3つのファイルにはSentinelで定義されたモックデータが入っています。全てを理解する必要はないので、これが最新のTerraformの状況をシミュレートしているとだけ押さえておけばとりあえず大丈夫です。
 
-sentinel.jsonを以下のように記述してください。
+`sentinel.json`を以下のように記述してください。
 
 ```json
 {
@@ -451,8 +577,14 @@ $ grep -A 4 -n tags testdata/mock-tfplan.sentinel
 
 タグがついたデータが入っておりテストが通るはずです。
 
+・macOS
 ```console
 $ sentinel apply foo.sentinel
+Pass
+```
+・Windows
+```shell
+PS > sentinel apply foo.sentinel
 Pass
 ```
 
@@ -504,8 +636,14 @@ main = rule {
 ```
 </details>
 
+・macOS
 ```console
 $ sentinel apply foo.sentinel
+Pass
+```
+・Windows
+```shell
+PS > sentinel apply foo.sentinel
 Pass
 ```
 
@@ -532,6 +670,7 @@ mandatory_tags = [
 
 ポリシーを試してみます。
 
+・macOS
 ```console
 $ sentinel apply foo.sentinel
 Fail
@@ -548,6 +687,11 @@ FALSE - foo.sentinel:19:1 - Rule "main"
     }
   }
 }
+```
+・Windows
+```shell
+PS > sentinel apply foo.sentinel
+Fail
 ```
 
 モックデータのインスタンスには`env`のタグはついていないので、Failとなりポリシーが意図通りに動作していることがわかります。
