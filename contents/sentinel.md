@@ -331,6 +331,7 @@ EOF
 次にSentinelのコードを作ります。
 
 `foo.sentinel`
+
 ・macOS
 ```shell
 $ cat <<EOF > foo.sentinel
@@ -392,7 +393,7 @@ bar = func() {
 EOF   
 ```
 ・Windows
-```shell
+```
 bar = func() {                                                                                                                                                           
     return "baz"                                                                                                                                                                
 }   
