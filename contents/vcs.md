@@ -94,7 +94,7 @@ $ mkdir -p tf-workspace/tf-handson-workshop
 $ cd tf-workspace/tf-handson-workshop
 ```
 ・Windows
-```
+```shell
 PS > mkdir tf-workspace/tf-handson-workshop
 PS > cd tf-workspace/tf-handson-workshop
 ```
@@ -129,7 +129,7 @@ $ git push -u origin master
 ```
 ・Windows
 ```shell
-PS > $env:GITURL = <YOUR_REPO_URL>
+PS > $env:GITURL = "<YOUR_REPO_URL>"
 PS > git init
 PS > git add main.tf
 PS > git commit -m "first commit"
