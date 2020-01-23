@@ -240,10 +240,10 @@ $ terraform apply
 ```
 ・Windows
 ```
-PS > $env:TF_VAR_access_key=************
-PS > $env:TF_VAR_secret_key=************
-PS > $env:TF_VAR_region=ap-northeast-1
-PS > $env:TF_VAR_ami=ami-06d9ad3f86032262d
+PS > $env:TF_VAR_access_key="************"
+PS > $env:TF_VAR_secret_key="************"
+PS > $env:TF_VAR_region="ap-northeast-1"
+PS > $env:TF_VAR_ami="ami-06d9ad3f86032262d"
 PS > terraform.exe plan
 PS > terraform.exe apply
 ```
@@ -261,10 +261,10 @@ $ terraform apply
 ```
 ・Windows
 ```
-PS > $env:TF_VAR_gcp_key=PATH_TO_KEY_JSON
-PS > $env:TF_VAR_machine_type=f1-micro
-PS > $env:TF_VAR_image=debian-cloud/debian-9
-PS > $env:TF_VAR_project=YOUT_PROJECT
+PS > $env:TF_VAR_gcp_key="PATH_TO_KEY_JSON"
+PS > $env:TF_VAR_machine_type="f1-micro"
+PS > $env:TF_VAR_image="debian-cloud/debian-9"
+PS > $env:TF_VAR_project="YOUT_PROJECT"
 PS > terraform.exe plan
 PS > terraform.exe apply
 ```
@@ -296,7 +296,7 @@ $ terraform apply -auto-approve
 ```
 ・Windows
 ```shell
-PS > $env:TF_VAR_hello_tf_instance_count=2
+PS > $env:TF_VAR_hello_tf_instance_count="2"
 PS > terraform.exe plan
 PS > terraform.exe apply -auto-approve
 ```
