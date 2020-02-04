@@ -133,7 +133,7 @@ PS > $env:GITURL = "<YOUR_REPO_URL>"
 PS > git init
 PS > git add main.tf
 PS > git commit -m "first commit"
-PS > git remote add origin $GITURL
+PS > git remote add origin $env:GITURL
 PS > git push -u origin master
 ```
 
